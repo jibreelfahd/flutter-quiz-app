@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_apps/start_screen.dart';
 import 'package:flutter_apps/question_screen.dart';
 import 'package:flutter_apps/data/questions.dart';
+import 'package:flutter_apps/result_screen.dart';
 
 class QuizWidget extends StatefulWidget {
   const QuizWidget({super.key});
@@ -27,10 +28,10 @@ class _QuizWidget extends State<QuizWidget> {
   void chooseAnswers(selectedAnswer) {
     selectedAnswers.add(selectedAnswer);
 
-    print(selectedAnswer);
     setState(() {
       if (selectedAnswers.length == questions.length) {
-        activeScreen == 'start-screen';
+        selectedAnswers = [];
+        activeScreen = 'result-screen';
       }
     });
   }
@@ -40,7 +41,13 @@ class _QuizWidget extends State<QuizWidget> {
     Widget screenWidget = StartScreen(switchScreen);
 
     if (activeScreen == 'questions-screen') {
-      screenWidget = QuestionScreen(onSelectedAnswer: chooseAnswers);
+      screenWidget = QuestionScreen(
+        onSelectedAnswer: chooseAnswers,
+      );
+    }
+
+    if (activeScreen == 'result-screen') {
+      screenWidget = ResultScreen(choosenAnswers: selectedAnswers);
     }
     return MaterialApp(
       home: Scaffold(
